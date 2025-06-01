@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Compteur d'abonnés YouTube</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .counter {
+            font-size: 40px;
+            background: linear-gradient(90deg, #ff0000, #ff8000);
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>👀 Compteur d'abonnés YouTube</h1>
+    <div class="counter" id="subscriberCount">
+        Chargement...
+    </div>
+
+    <script>
+        const apiKey = 'AIzaSyCml18cg_Al20GlxrLsC8WNiHJKpDG8nhA'; // Ta clé API
+        const channelId = 'UCoMP2FICFjpXCVX0rlmfoIA'; // Ton ID de chaîne
+
+        async function fetchSubscribers() {
+            try {
+                const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
+                const data = await response.json();
+                const count = data.items[0].statistics.subscriberCount;
+
+                document.getElementById('subscriberCount').textContent = `${count} abonnés sur 1K 🎯`;
+            } catch (error) {
+                document.getElementById('subscriberCount').textContent = 'Erreur de chargement...';
+                console.error(error);
+            }
+        }
+
+        fetchSubscribers();
+        setInterval(fetchSubscribers, 10000); // Rafraîchit toutes les 10 secondes
+    </script>
+
+</body>
+</html>
